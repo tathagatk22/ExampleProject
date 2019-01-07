@@ -15,7 +15,7 @@ type Message struct {
 func main() {
 
 	url := "http://192.168.0.63:8080/message"
-	var message MessageStruct
+	var message Message
 	message.Email = "tathagat.khanorkar"
 	message.Message = "handleDetailss"
 	b, err := json.Marshal(message)

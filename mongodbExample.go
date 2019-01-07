@@ -57,6 +57,7 @@ func handle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func handleRead(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "GET")
 	db := context.Get(r, "database").(*mgo.Session)
 	var messages []*MessageStruct
 	if err := db.DB("messagesapp").C("message").
@@ -70,6 +71,7 @@ func handleRead(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func handleInsert(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "GET")
 	db := context.Get(r, "database").(*mgo.Session)
 	var message MessageStruct
 	if err := json.NewDecoder(r.Body).Decode(&message); err != nil {
