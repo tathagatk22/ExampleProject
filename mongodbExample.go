@@ -58,34 +58,34 @@ func handle(w http.ResponseWriter, r *http.Request) {
 }
 func handleRead(w http.ResponseWriter, r *http.Request) {
 	db := context.Get(r, "database").(*mgo.Session)
-	var comments []*comment
+	var messages []*MessageStruct
 	if err := db.DB("messagesapp").C("message").
-		Find(nil).Sort("-when").Limit(100).All(&comments); err != nil {
+		Find(nil).Sort("-when").Limit(100).All(&messages); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if err := json.NewEncoder(w).Encode(comments); err != nil {
+	if err := json.NewEncoder(w).Encode(messages); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 }
 func handleInsert(w http.ResponseWriter, r *http.Request) {
 	db := context.Get(r, "database").(*mgo.Session)
-	var c comment
-	if err := json.NewDecoder(r.Body).Decode(&c); err != nil {
+	var message MessageStruct
+	if err := json.NewDecoder(r.Body).Decode(&message); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	c.ID = bson.NewObjectId()
-	c.When = time.Now()
-	if err := db.DB("messagesapp").C("message").Insert(&c); err != nil {
+	message.ID = bson.NewObjectId()
+	message.When = time.Now()
+	if err := db.DB("messagesapp").C("message").Insert(&message); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
 }
 
-type comment struct {
+type MessageStruct struct {
 	ID      bson.ObjectId `json:"id" bson:"_id"`
 	Email   string        `json:"email" bson:"email"`
 	Message string        `json:"message" bson:"message"`

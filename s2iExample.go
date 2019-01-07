@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/openshift/source-to-image/pkg/api"
 	"github.com/openshift/source-to-image/pkg/build/strategies"
 	"github.com/openshift/source-to-image/pkg/docker"
@@ -9,7 +10,6 @@ import (
 	utilglog "github.com/openshift/source-to-image/pkg/util/glog"
 	"log"
 	"os"
-	"fmt"
 )
 
 func getApiConfig(builderImage string, displayName string, stringURL string, dockerConfig *api.DockerConfig, tag string) api.Config {
